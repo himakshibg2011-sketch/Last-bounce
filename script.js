@@ -1,3 +1,5 @@
+const { cloneElement } = require("react");
+
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
@@ -216,6 +218,90 @@ function loseLife() {
         endGame();
         return;
     }
+
+mainBall.x = canvas.width / 2;
+mainBall.y = canvas.height / 2;
+mainBall.dx = 4;
+mainBall.dy= -4;
 }
 
-// Reset ball
+// Update lives
+
+function updateLives() {
+    livesText.textContent = "❤️".repeat(lives);
+}
+
+//Timer
+
+function updateTimer() {
+    let seconds = Math.floor(
+        (Date.now() - startTime) / 1000
+    );
+    timeText.textContent = seconds;
+}
+
+// Difficutly 
+
+function increaseDifficulty() {
+    if (Date.now()- lastSpeedIncrease >= 15000) {
+        mainBall.speed *= 1.10;
+
+        let directionX = 
+        mainBall.dx >= 0?1 : -1;
+        let directionY = 
+        mainBall.dy >= 0?1: -1;
+
+        mainBall.dx = 
+        directionX = mainBall.speed = 0.8;
+        mainBall.dy = 
+        directionY =  mainBall.speed;
+
+        lastSpeedIncrease = Date.now();
+    }
+}
+
+// Event checking
+
+function checkEvents() {
+    if(eventActive) {
+        if (Date.now() >= eventEndTime) {
+            endEvent();
+        }
+
+        return;
+    }
+
+    if (Datenow() >= nextEventTime) {
+        startRandomEvent();
+    }
+}
+
+// Start random event
+
+function startRandomEvent() {
+    eventActive = true;
+
+    const events =[
+        speedEvent,
+        cloneEvent,
+        shrinkEvent,
+        blackoutEvent,
+        extraLifeEvent
+    ];
+
+    const randomIndex = 
+    Math.floor(Math.random() * events.length);
+
+    currentEvent = events[randomIndex];
+    currentEvent();
+}
+
+//Event1-Speed
+
+function speedEvent() {
+    showEvent("Speed boost");
+    mainBall.dx*= 1.5;
+    mainBall.dy *= 1.5;
+
+    eventEndTime = Date.now() + 7000;
+}
