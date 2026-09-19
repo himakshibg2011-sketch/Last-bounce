@@ -12,35 +12,43 @@
     <body>
     
         <div class="game-container">
-            <div class="top-bar">
 
-                <div class="score-box">
-                    SCORE
-                    <span id="score">0</span>
-                </div>
+    <div class="top-bar">
 
-                <div class="time-box">
-                    TIME
-                    <span id="time">60</span>
-                </div>
-
-                <div class="lives-box">
-                    LIVES
-                    <span id="lives">❤️❤️❤️</span>
-                </div>
-
-            </div>
-
-             <div id="event-message"></div>
-            <canvas id="gameCanvas"></canvas>
-            <div id="game-over">
-
-             <h1>GAME OVER</h1>
-              <p>Score: <span id="final-score">0</span></p>
-              <p>Time: <span id="final-time">0</span></p>
-              <button id="restart-button">PLAY AGAIN</button>
-             </div>
+        <div class="score-box">
+            SCORE
+            <span id="score">0</span>
         </div>
+
+        <div class="time-box">
+            TIME
+            <span id="time">0</span>
+        </div>
+
+        <div class="lives-box">
+            LIVES
+            <span id="lives">❤️❤️❤️</span>
+        </div>
+
+    </div>
+
+    <div id="event-message"></div>
+
+    <canvas id="gameCanvas"></canvas>
+
+    <div id="game-over">
+
+        <h1>GAME OVER</h1>
+
+        <p>Score: <span id="final-score">0</span></p>
+
+        <p>Time: <span id="final-time">0</span></p>
+
+        <button id="restart-button">PLAY AGAIN</button>
+
+    </div>
+
+</div>
 
         <script src="script.js"></script>
 

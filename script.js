@@ -1,4 +1,4 @@
-const { cloneElement } = require("react");
+console.log("script is workin");
 
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
@@ -271,7 +271,7 @@ function checkEvents() {
         return;
     }
 
-    if (Datenow() >= nextEventTime) {
+    if (Date.now() >= nextEventTime) {
         startRandomEvent();
     }
 }
@@ -305,3 +305,142 @@ function speedEvent() {
 
     eventEndTime = Date.now() + 7000;
 }
+
+// Event2-Clone
+
+function cloneEvent() {
+    showEvent("Ball Clone");
+
+    let clone = {
+        x:mainBall.x,
+        y:mainBall.y,
+        radius:mainBall.radius,
+        speed:mainBall.speed,
+        dx:-mainBall.dx,
+        dy:mainBall.dy,
+        active:true
+    };
+
+    extraBalls.push(clone);
+    eventEndTime = Date.now() + 12000;
+}
+
+//Event3-Small paddle
+
+function shrinkEvent() {
+    showEvent("Paddle Shrink");
+    paddle.width = 80;
+    eventEndTime = Date.now() + 10000;
+}
+
+//Event4-Blackout
+
+function blackoutEvent() {
+    showEvent("Blackout");
+    document.body.style.background = "black";
+    eventEndTime = Date.now() + 7000;
+}
+
+//Event5-Extra life
+
+function extraLifeEvent() {
+    showEvent("Extra life");
+
+    if(lives,3) {
+        lives++;
+        updateLives();
+    }
+    eventEndTime=Date.now() + 3000;
+}
+
+//End Event
+
+function endEvent() {
+    eventActive =false;
+    currentEvent = null;
+    paddle.width = 140;
+    document.body.style.background = "#111";
+    hideEvent();
+    nextEventTime = 
+    Date.now() +randomEventDelay();
+}
+
+//Event Message
+
+function showEvent(message) {
+    eventMessage.textContent = message;
+    eventMessage.style.opacity = "1";
+}
+
+function hideEvent() {
+    eventMessage.style.opacity = "0";
+}
+
+//Draw Everything
+
+function draw() {
+    ctx.fillStyle = "#191919";
+    ctx.fillRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+    drawBall(mainBall);
+
+    for (let ball of extraBalls) {
+        drawBall(ball);
+    }
+
+    drawPaddle();
+}
+
+//Draw Ball
+
+function drawBall(ball) {
+    if(!ball.active) {
+        return;
+    }
+
+    ctx.beginPath();
+    ctx.arc(
+        ball.x,
+        ball.y,
+        ball.radius,
+        0,
+        Math.PI *2
+    );
+
+    ctx.fillStyle = "white";
+    ctx.fill();
+    ctx.closePath();
+}
+
+//Draw paddle
+
+function drawPaddle() {
+    ctx.fillStyle = "white";
+    ctx.fillRect(
+        paddle.x,
+        paddle.y,
+        paddle.width,
+        paddle.height
+    );
+}
+
+//Gameover
+
+function endGame() {
+    gameRunning = false;
+    finalScore.textContent = score;
+    finalTime.textContent = timeText.textContent;
+    
+    gameOverScreen.style.display = "block";
+}
+
+//Restart
+
+restartButton.addEventListener("click", function() {
+    location.reload();
+});
