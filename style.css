@@ -134,15 +134,13 @@ body {
 
 #event-message {
     position:absolute;
-    top:80px;
-    left:50%;
-    transform: translateX(-50%);
-    color:white;
-    text-align: center;
+    left:15px;
+    bottom:15px;
+    width:42px;
+    height:42px;
     z-index:10;
-    pointer-events:none;
     opacity:0;
-    text-shadow: 0 0 10px black;
+    pointer-events:none;
 }
 
 #event-title {
@@ -150,8 +148,38 @@ body {
     font-weight:bold;
 }
 
-#event-timer {
-    margin-top :5px;
-    font-size:20px;
-    font-weight: bold;
+#event-circle {
+    width:42px;
+    height:42;
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    position:relative;
+    background: conic-gradient(
+        white 360deg,
+        transparent 0deg
+    );
+}
+
+#event-circle::before {
+    content: "";
+    position:absolute;
+    width:36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #111;
+}
+
+#event-icon {
+    width:30px;
+    height:30px;
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:17px;
+    background: rgbda(0, 0, 0, 0,.7 );
+    position:relative;
+    z-index: 2;
 }

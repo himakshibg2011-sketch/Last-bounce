@@ -15,8 +15,8 @@ const finalTime = document.getElementById("final-time");
 
 const restartButton = document.getElementById("restart-button");
 
-const eventTitle = document.getElementById("event-title");
-const eventTimer = document.getElementById("event-timer");
+const eventCircle = document.getElementById("event-circle");
+const eventIcon = document.getElementById("event-icon");
 
 // CANVAS SIZE
 
@@ -89,6 +89,7 @@ document.addEventListener("keyup", function(event) {
 let eventActive = false;
 let currentEvent = null;
 let eventEndTime = 0;
+let eventDuration = 0;
 
 //Random Event Timer
 
@@ -121,7 +122,7 @@ function update() {
     updateTimer();
     increaseDifficulty();
     checkEvents();
-    updateEventTimer();
+    updateEventCircle();
 }
 
 // PADDLE MOVEMENT 
@@ -322,17 +323,18 @@ function startRandomEvent() {
 //Event1-Speed
 
 function speedEvent() {
-    showEvent("Speed boost");
+    showEvent("⚡");
     mainBall.dx*= 1.6;
     mainBall.dy *= 1.6;
 
+    eventDuration= 7000;
     eventEndTime = Date.now() + 7000;
 }
 
 // Event2-Clone
 
 function cloneEvent() {
-    showEvent("Ball Clone");
+    showEvent("👯");
 
     let clone = {
         x:mainBall.x,
@@ -345,34 +347,39 @@ function cloneEvent() {
     };
 
     extraBalls.push(clone);
+    eventDuration = 12000;
     eventEndTime = Date.now() + 12000;
 }
 
 //Event3-Small paddle
 
 function shrinkEvent() {
-    showEvent("Paddle Shrink");
+    showEvent("🧊");
     paddle.width = 80;
+    eventDuration = 1000;
     eventEndTime = Date.now() + 10000;
 }
 
 //Event4-Blackout
 
 function blackoutEvent() {
-    showEvent("Blackout");
+    showEvent("🌑");
     document.body.style.background = "black";
+    eventDuration = 7000;
     eventEndTime = Date.now() + 7000;
 }
 
 //Event5-Extra life
 
 function extraLifeEvent() {
-    showEvent("Extra life");
+    showEvent("❤️");
 
     if(lives,3) {
         lives++;
         updateLives();
     }
+    
+    eventDuration = 3000;
     eventEndTime=Date.now() + 3000;
 }
 
@@ -390,6 +397,7 @@ function endEvent() {
     paddle.width = 140;
     document.body.style.background = "#111";
     hideEvent();
+    eventMessage.style.opacity ="0";
     nextEventTime = Date.now() + randomEventDelay();
 }
 
@@ -397,10 +405,9 @@ function endEvent() {
 
 function showEvent(message) {
 
-    eventTitle.textContent = message;
-    eventTimer.textContent ="";
-    eventMessage.style.opacity = "1";
-
+    eventMessage.style.opacity ="1";
+    eventCircle.style.display = "flex";
+    eventIcon.textContent = message;
 }
 
 function hideEvent() {
@@ -479,18 +486,23 @@ restartButton.addEventListener("click", function() {
     location.reload();
 });
 
-function updateEventTimer() {
+function updateEventCircle() {
 
     if(!eventActive) {
         return;
     }
 
-    let remainingTime = 
-    Math.ceil((eventEndTime - Date.now()) / 1000);
-
-    if (remainingTime < 0) {
-        remainingTime = 0;
+    let remaining = eventEndTime - Date.now();
+    let percentage = remaining / eventDuration;
+    if (percentage <0) {
+        percentage = 0;
     }
 
-    eventTimer.textContent = reaminingTime = "s";
+    let degrees = percentage * 360;
+
+    eventCircle.style.background =
+    `conic-gradient(
+    white ${degrees}deg,
+    transparent ${degrees}deg
+)`;
 }
