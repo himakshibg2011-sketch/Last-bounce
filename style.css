@@ -136,21 +136,16 @@ body {
     position:absolute;
     left:15px;
     bottom:15px;
-    width:42px;
-    height:42px;
+    width:40px;
+    height:40px;
     z-index:10;
     opacity:0;
     pointer-events:none;
 }
 
-#event-title {
-    font-size: 30px;
-    font-weight:bold;
-}
-
 #event-circle {
-    width:42px;
-    height:42;
+    width:40px;
+    height:40px;
     border-radius:50%;
     display:flex;
     justify-content:center;
@@ -165,8 +160,8 @@ body {
 #event-circle::before {
     content: "";
     position:absolute;
-    width:36px;
-    height: 36px;
+    width:34px;
+    height: 34px;
     border-radius: 50%;
     background: #111;
 }
@@ -179,7 +174,7 @@ body {
     justify-content:center;
     align-items:center;
     font-size:17px;
-    background: rgbda(0, 0, 0, 0,.7 );
+    background: rgba(0, 0, 0, 0.7 );
     position:relative;
     z-index: 2;
 }

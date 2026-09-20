@@ -90,6 +90,7 @@ let eventActive = false;
 let currentEvent = null;
 let eventEndTime = 0;
 let eventDuration = 0;
+let blackoutActive = false;
 
 //Random Event Timer
 
@@ -185,6 +186,7 @@ function updateBall(ball) {
 
     let hitPosition=
     (ball.x - paddle.x) / paddle.width;
+    hitPosition = Math.max(0, Math.min(1, hitPosition));
     
     let currentSpeed = 
      Math.sqrt(
@@ -249,7 +251,7 @@ function loseLife() {
     );
 
     let direction = Math.random() < 0.5 ? -1:1;
-    let angle = (Math.random() * 0.8) + 0.35;
+    let angle = (Math.random() * 0.5) + 0.35;
     mainBall.dx = direction * currentSpeed * angle;
     mainBall.dy = -Math.sqrt(
         currentSpeed * currentSpeed -
@@ -364,9 +366,9 @@ function shrinkEvent() {
 
 function blackoutEvent() {
     showEvent("🌑");
-    document.body.style.background = "black";
+    blackoutActive=true;
     eventDuration = 7000;
-    eventEndTime = Date.now() + 7000;
+    eventEndTime = Date.now() + eventDuration;
 }
 
 //Event5-Extra life
@@ -395,7 +397,7 @@ function endEvent() {
     currentEvent = null;
 
     paddle.width = 140;
-    document.body.style.background = "#111";
+    blackoutActive = false;
     hideEvent();
     eventMessage.style.opacity ="0";
     nextEventTime = Date.now() + randomEventDelay();
@@ -411,9 +413,6 @@ function showEvent(message) {
 }
 
 function hideEvent() {
-
-    eventTitle.textContent = "";
-    eventTimer.textContent = "";
     eventMessage.style.opacity = "0";
 }
 
@@ -429,12 +428,35 @@ function draw() {
     );
 
     drawBall(mainBall);
-
     for (let ball of extraBalls) {
         drawBall(ball);
     }
 
     drawPaddle();
+
+    if(blackoutActive) {
+        let elapsed = 
+        eventDuration - (eventEndTime - Date.now());
+        let fadeTime = 700;
+        let opactiy;
+
+        if(elapsed < fadeTime) {
+            opactiy = elapsed /fadeTime;
+        } else if (elapsed > eventDuration - fadeTime) {
+            opacity = 
+            (eventDuration - elapsed) / fadeTime;
+        } else {
+            opactiy = 1;
+        }
+
+        ctx.fillStyle = 'rgba(0, 0, 0, ${opacity})';
+        ctx.fillRect(
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
+    }
 }
 
 //Draw Ball
