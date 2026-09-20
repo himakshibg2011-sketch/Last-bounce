@@ -7,13 +7,16 @@ const scoreText = document.getElementById("score");
 const timeText = document.getElementById("time");
 const livesText = document.getElementById("lives");
 
-const eventMessage = document.getElementById("event-Message");
+const eventMessage = document.getElementById("event-message");
 
 const gameOverScreen = document.getElementById("game-over");
 const finalScore = document.getElementById("final-score");
 const finalTime = document.getElementById("final-time");
 
 const restartButton = document.getElementById("restart-button");
+
+const eventTitle = document.getElementById("event-title");
+const eventTimer = document.getElementById("event-timer");
 
 // CANVAS SIZE
 
@@ -118,6 +121,7 @@ function update() {
     updateTimer();
     increaseDifficulty();
     checkEvents();
+    updateEventTimer();
 }
 
 // PADDLE MOVEMENT 
@@ -235,7 +239,7 @@ function loseLife() {
     }
 
     mainBall.x = canvas.width / 2;
-    mainBall.y = canvas.height / 2;
+    mainBall.y = canvas.height / 2 - 80;
 
     let currentSpeed = 
     Math.sqrt(
@@ -243,8 +247,13 @@ function loseLife() {
         mainBall.dy * mainBall.dy
     );
 
-    mainBall.dx = currentSpeed * 0.7;
-    mainBall.dy = currentSpeed * 0.7;
+    let direction = Math.random() < 0.5 ? -1:1;
+    let angle = (Math.random() * 0.8) + 0.35;
+    mainBall.dx = direction * currentSpeed * angle;
+    mainBall.dy = -Math.sqrt(
+        currentSpeed * currentSpeed -
+        mainBall.dx * mainBall.dx
+    );
 }
 
 // Update lives
@@ -387,11 +396,17 @@ function endEvent() {
 //Event Message
 
 function showEvent(message) {
-    eventMessage.textContent = message;
+
+    eventTitle.textContent = message;
+    eventTimer.textContent ="";
     eventMessage.style.opacity = "1";
+
 }
 
 function hideEvent() {
+
+    eventTitle.textContent = "";
+    eventTimer.textContent = "";
     eventMessage.style.opacity = "0";
 }
 
@@ -463,3 +478,19 @@ function endGame() {
 restartButton.addEventListener("click", function() {
     location.reload();
 });
+
+function updateEventTimer() {
+
+    if(!eventActive) {
+        return;
+    }
+
+    let remainingTime = 
+    Math.ceil((eventEndTime - Date.now()) / 1000);
+
+    if (remainingTime < 0) {
+        remainingTime = 0;
+    }
+
+    eventTimer.textContent = reaminingTime = "s";
+}

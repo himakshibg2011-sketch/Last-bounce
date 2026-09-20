@@ -73,30 +73,6 @@ body {
     height: 100%;
 }
 
-#event-message {
-    position: absolute;
-
-    top:80px;
-    left: 50%;
-
-    transform: translateX(-50);
-
-    color: white;
-
-    font-size: 28px;
-    font-weight: bold;
-
-    text-align: center;
-
-    z-index: 10;
-
-    pointer-events: none;
-
-    text-shadow: 0 0 10px black;
-
-    opacity: 0;
-}
-
 #game-over {
     position: absolute;
 
@@ -154,4 +130,28 @@ body {
 
 #restart-button:hover {
     transform: scale(1.05);
+}
+
+#event-message {
+    position:absolute;
+    top:80px;
+    left:50%;
+    transform: translateX(-50%);
+    color:white;
+    text-align: center;
+    z-index:10;
+    pointer-events:none;
+    opacity:0;
+    text-shadow: 0 0 10px black;
+}
+
+#event-title {
+    font-size: 30px;
+    font-weight:bold;
+}
+
+#event-timer {
+    margin-top :5px;
+    font-size:20px;
+    font-weight: bold;
 }
