@@ -153,17 +153,17 @@ function updateBall(ball) {
 
     if (ball.x - ball.radius <=0) {
         ball.x = ball.radius;
-        ball.dx *= -1;
+        ball.dx = Math.abs(ball.dx);
     }
 
     if (ball.x + ball.radius >= canvas.width) {
         ball.x = canvas.width - ball.radius;
-        ball.dx *= -1;
+        ball.dx = -Math.abs(ball.dx);
     }
 
     if (ball.y - ball.radius <= 0) {
         ball.y = ball.radius;
-        ball.dy *= -1;
+        ball.dy = Math.abs(ball.dy);
     }
 
  //PADDLE COLLISION
@@ -172,20 +172,35 @@ function updateBall(ball) {
     ball.dy > 0 &&
     ball.y + ball.radius >= paddle.y &&
     ball.y - ball.radius <= paddle.y + paddle.height &&
-    ball.x >= paddle.x &&
-    ball.x <= paddle.x + paddle.width
+    ball.x + ball.radius >= paddle.x &&
+    ball.x - ball.radius <= paddle.x + paddle.width
  ) {
-    ball.dy *= -1;
+
+    ball.y = paddle.y - ball.radius;
 
     let hitPosition=
     (ball.x - paddle.x) / paddle.width;
-    let angle = (hitPosition - 0.5) *2;
-    ball.dx = angle * ball.speed;
+    
+    let currentSpeed = 
+     Math.sqrt(
+        ball.dx * ball.dx +
+        ball.dy * ball.dy
+     );
 
-    ball.dy = -Math.abs(ball.dy);
-    score +=10;
-    scoreText.textContent = score;
+     let angle = (hitPosition - 0.5) *2;
+
+     ball.dx = angle * currentSpeed * 0.8;
+
+     ball.dy = -Math.sqrt(
+        currentSpeed * currentSpeed - 
+        ball.dx* ball.dx
+     );
+
+     score += 10;
+
+     scoreText.textContent = score;
  }
+
 
  // Ball falls
 
@@ -219,10 +234,17 @@ function loseLife() {
         return;
     }
 
-mainBall.x = canvas.width / 2;
-mainBall.y = canvas.height / 2;
-mainBall.dx = 4;
-mainBall.dy= -4;
+    mainBall.x = canvas.width / 2;
+    mainBall.y = canvas.height / 2;
+
+    let currentSpeed = 
+    Math.sqrt(
+        mainBall.dx * mainBall.dx +
+        mainBall.dy * mainBall.dy
+    );
+
+    mainBall.dx = currentSpeed * 0.7;
+    mainBall.dy = currentSpeed * 0.7;
 }
 
 // Update lives
@@ -244,17 +266,9 @@ function updateTimer() {
 
 function increaseDifficulty() {
     if (Date.now()- lastSpeedIncrease >= 15000) {
-        mainBall.speed *= 1.10;
-
-        let directionX = 
-        mainBall.dx >= 0?1 : -1;
-        let directionY = 
-        mainBall.dy >= 0?1: -1;
-
-        mainBall.dx = 
-        directionX = mainBall.speed = 0.8;
-        mainBall.dy = 
-        directionY =  mainBall.speed;
+     
+        mainBall.dx *= 1.10;
+        mainBall.dy *= 1.10;
 
         lastSpeedIncrease = Date.now();
     }
@@ -300,8 +314,8 @@ function startRandomEvent() {
 
 function speedEvent() {
     showEvent("Speed boost");
-    mainBall.dx*= 1.5;
-    mainBall.dy *= 1.5;
+    mainBall.dx*= 1.6;
+    mainBall.dy *= 1.6;
 
     eventEndTime = Date.now() + 7000;
 }
@@ -356,13 +370,18 @@ function extraLifeEvent() {
 //End Event
 
 function endEvent() {
-    eventActive =false;
+    if (currentEvent === speedEvent) {
+        mainBall.dx /= 1.6;
+        mainBall.dy /= 1.6;
+    }
+
+    eventActive = false;
     currentEvent = null;
+
     paddle.width = 140;
     document.body.style.background = "#111";
     hideEvent();
-    nextEventTime = 
-    Date.now() +randomEventDelay();
+    nextEventTime = Date.now() + randomEventDelay();
 }
 
 //Event Message
