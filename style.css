@@ -5,27 +5,19 @@
 }
 
 body {
-    background: #111;
-    font-family: Arial, sans-serif;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    min-height: 100vh;
-
-    overflow: hidden;
+   margin: 0;
+   overflow: hidden;
 }
 
 .game-container {
     position: relative;
 
-    width: 900px;
-    height: 600px;
-
-    background: #191919;
-
-    border:4px solid white;
+    width: 100vw;
+    height: 100vh;
+    background-image: url("background.jfif");
+    background-size:cover;
+    background-position: center;
+    background-repeat:no-repeat;
 
     overflow: hidden;
 }
@@ -39,7 +31,7 @@ body {
     width:100%;
     height: 65px;
 
-    background: rgba(0, 0, 0, 0.7);
+    background: black;
 
     color:white;
 
@@ -65,12 +57,10 @@ body {
 
 #gameCanvas {
     position: absolute;
-
-    left: 0;
-    top: 0;
-
+    left:0;
+    top:65px;
     width:100%;
-    height: 100%;
+    height: calc(100% - 65px);
 }
 
 #game-over {

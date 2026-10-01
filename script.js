@@ -3,6 +3,9 @@ console.log("script is workin");
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight - 65;
+
 const scoreText = document.getElementById("score");
 const timeText = document.getElementById("time");
 const livesText = document.getElementById("lives");
@@ -17,11 +20,6 @@ const restartButton = document.getElementById("restart-button");
 
 const eventCircle = document.getElementById("event-circle");
 const eventIcon = document.getElementById("event-icon");
-
-// CANVAS SIZE
-
-canvas.width = 900;
-canvas.height = 600;
 
 // GAME VARIABLES
 
@@ -57,6 +55,14 @@ const mainBall = {
 
 // Extra balls created by events
 let extraBalls = [];
+
+let lifeHeart = {
+    x: 0,
+    y:0,
+    radius: 14,
+    speed:3,
+    active: false
+};
 
 // KEYBOARD
 
@@ -120,6 +126,7 @@ function update() {
     updatePaddle();
     updateBall(mainBall);
     updateExtraBalls();
+    updateLifeHeart(); 
     updateTimer();
     increaseDifficulty();
     checkEvents();
@@ -376,13 +383,58 @@ function blackoutEvent() {
 function extraLifeEvent() {
     showEvent("❤️");
 
-    if(lives,3) {
-        lives++;
-        updateLives();
-    }
+    spawnLifeHeart();
     
-    eventDuration = 3000;
-    eventEndTime=Date.now() + 3000;
+    eventDuration = 10000;
+    eventEndTime=Date.now() + eventDuration;
+}
+
+function spawnLifeHeart() {
+    lifeHeart.x =
+    Math.random() * (canvas.width - 60) + 30;
+    lifeHeart.y = -30;
+    lifeHeart.active = true;
+}
+
+function updateLifeHeart() {
+    if (!lifeHeart.active) {
+        return;
+    }
+
+    lifeHeart.y += lifeHeart.speed;
+
+    if (
+        lifeHeart.y + lifeHeart.radius >= paddle.y &&
+        lifeHeart.y - lifeHeart.radius <= paddle.y +paddle.height &&
+        lifeHeart.x + lifeHeart.radius >= paddle.x &&
+        lifeHeart.x - lifeHeart.radius <= paddle.x + paddle.width
+    ) {
+        if (lives < 3) {
+            lives++;
+            updateLives();
+        }
+
+        lifeHeart.active = false;
+    }
+
+    if (lifeHeart.y - lifeHeart.radius > canvas.height) {
+        lifeHeart.active = false;
+    }
+}
+
+function drawLifeHeart() {
+    if (!lifeHeart.active) {
+        return;
+    }
+
+    ctx.font = "28px Arial";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(
+        "❤️",
+        lifeHeart.x,
+        lifeHeart.y
+    );
 }
 
 //End Event
@@ -419,18 +471,20 @@ function hideEvent() {
 //Draw Everything
 
 function draw() {
-    ctx.fillStyle = "#191919";
-    ctx.fillRect(
+    ctx.clearRect(
         0,
         0,
         canvas.width,
         canvas.height
     );
 
+
     drawBall(mainBall);
     for (let ball of extraBalls) {
         drawBall(ball);
     }
+
+    drawLifeHeart();
 
     drawPaddle();
 
