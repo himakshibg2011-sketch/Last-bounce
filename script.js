@@ -582,3 +582,10 @@ function updateEventCircle() {
     transparent ${degrees}deg
 )`;
 }
+
+const homeScreen = document.getElementById("home-screen");
+const playBtn = document.getElementById("playBtn");
+
+playBtn.addEventListener("click", function (){
+    homeScreen.style.display = "none"
+});
