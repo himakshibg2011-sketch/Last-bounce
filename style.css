@@ -192,15 +192,19 @@ body {
     gap:22px;
 }
 
-.game-title {
-    color:white;
-    font-family: "Arial", sans-serif;
-    font-size: clamp(42px, 7vw, 90px);
-    font-weight: 900;
-    letter-spacing: 5px;
+#home-screen .game-title {
+    color:white ! important;
+    font-family:Arial,sans-serif;
+    font-size: 48px;
+    font-weight:900;
+    letter-spacing:4px;
     margin:0;
-    text-shadow: 0 0 10px #00cfff,
-                 0 0 25px #0077ff;
+    text-shadow:
+    0 0 5px #ffffff,
+    0 0 10px #00e5ff,
+    0 0 20px #00e5ff,
+    0 0 35px #008cff,
+    0 0 55px #008cff;
 }
 
 .home-subtitle {
@@ -281,17 +285,6 @@ body {
                 0 0 24px #00d9ff;
 }
 
-.game-title {
-    color: #ffffff !important;
-    font-family: Arial, sans-serif;
-    font-size:clamp(32px, 4vw, 54px);
-    font-weight:900;
-    letter-spacing: 4px;
-    margin:0;
-    text-shadow: 0 0 8px #42dfff,
-                 0 0 22px rgba(0, 200, 255, 0.6);
-}
-
 #playBtn {
     color: #ffffff;
     font-size: 23px;
@@ -300,3 +293,49 @@ body {
     padding-bottom:12px;
 }
 
+#settings-panel {
+    position:absolute;
+    top:0;
+    right:0;
+    width:320px;
+    height:100%;
+    padding: 40px 25px;
+    box-sizing:border-box;
+    background:rgba(5, 12, 30, 0.95);
+    border-left: 2px solid #43eBff;
+    box-shadow: -5px 0 25px rgba (0,217, 255, 0.25);
+    color: white;
+    font-family:Arial, sans-serif;
+    transform: translateX(100%);
+    transition: transform 0.4s ease;
+    z-index:40;
+}
+
+#settings-panel.open{
+    transform:translateX(0);
+}
+
+#closeSettings {
+    position:absolute;
+    top:20px;
+    right:20px;
+    background: transparent;
+    border:none;
+    color:white;
+    font-size: 25px;
+    cursor:pointer;
+}
+
+#settings-panel h2 {
+    color: #43e8ff;
+    letter-spacing: 4px;
+    margin-top:35px;
+}
+
+.setting-option {
+    display:flex;
+    justify-content: space-between;
+    align-items:center;
+    margin-top:35px;
+    color:white;
+}

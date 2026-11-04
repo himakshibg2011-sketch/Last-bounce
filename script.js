@@ -589,3 +589,15 @@ const playBtn = document.getElementById("playBtn");
 playBtn.addEventListener("click", function (){
     homeScreen.style.display = "none"
 });
+
+const settingsBtn = document.getElementById("settingsBtn");
+const settingsPanel = document.getElementById("settings-panel");
+const closeSettings = document.getElementById("closeSettings");
+
+settingsBtn.addEventListener("click", function () {
+    settingsPanel.classList.add("open");
+});
+
+closeSettings.addEventListener("click", function () {
+    settingsPanel.classList.remove("open");
+});
