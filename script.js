@@ -25,7 +25,7 @@ const eventIcon = document.getElementById("event-icon");
 
 let score = 0;
 let lives = 3;
-let gameRunning = true;
+let gameRunning = false;
 let startTime = Date.now();
 let lastSpeedIncrease = Date.now();
 
@@ -100,7 +100,7 @@ let blackoutActive = false;
 
 //Random Event Timer
 
-let nextEventTime = Date.now() + randomEventDelay();
+let nextEventTime = 0;
 function randomEventDelay() {
     return 15000 + Math.random() * 15000;
 }
@@ -116,8 +116,6 @@ function gameLoop() {
     draw();
     requestAnimationFrame(gameLoop);
 }
-
-gameLoop();
 
 //UPDATE
 
@@ -163,6 +161,27 @@ function updateBall(ball) {
 
     ball.x += ball.dx;
     ball.y += ball.dy;
+
+    // BALL TRAIL
+    
+    if (trailEnabled) {
+        if (!ball.trail) {
+            ball.trail = [];
+        }
+
+        ball.trail.push({
+            x:ball.x,
+            y:ball.y,
+            dx:ball.dx,
+            dy:ball.dy
+        });
+
+        if (ball.trail.length >8) {
+            ball.trail.shift();
+        }
+    } else if (ball.trail) {
+        ball.trail = [];
+    }
 
     if (ball.x - ball.radius <=0) {
         ball.x = ball.radius;
@@ -296,7 +315,11 @@ function increaseDifficulty() {
 // Event checking
 
 function checkEvents() {
-    if(eventActive) {
+    if(!gameRunning) {
+        return;
+    }
+
+    if (eventActive) {
         if (Date.now() >= eventEndTime) {
             endEvent();
         }
@@ -307,7 +330,7 @@ function checkEvents() {
     if (Date.now() >= nextEventTime) {
         startRandomEvent();
     }
-}
+    }
 
 // Start random event
 
@@ -520,6 +543,63 @@ function drawBall(ball) {
         return;
     }
 
+    // DRAW BALL TRAIL
+
+    if (trailEnabled && ball.trail) {
+        ctx.save();
+
+        for(let i=0; i<ball.trail.length; i++) {
+            let point = ball.trail[i];
+
+            let length= Math.sqrt(
+                point.dx*point.dx +
+                point.dy*point.dy
+            );
+
+            if (length ===0) continue;
+
+            let dirX = point.dx/length;
+            let dirY = point.dy/length;
+            let perpX = -dirY;
+            let perpY = dirX;
+
+            let trailLength = 20;
+            let trailWidth = ball.radius * 1.3;
+
+            let backX = point.x -dirX*trailLength;
+            let backY = point.y - dirY*trailLength;
+
+            ctx.globalAlpha = 0.08 +(i / ball.trail.length)*0.25;
+
+            ctx.fillStyle = "white";
+            ctx.beginPath();
+            ctx.moveTo(
+                point.x + perpX * trailWidth/2,
+                point.y + perpY *trailWidth /2
+            );
+
+            ctx.lineTo(
+                point.x - perpX * trailWidth /2,
+                point.y - perpY *trailWidth /2
+            );
+
+            ctx.lineTo(
+                backX - perpX *trailWidth *0.12,
+                backY - perpY *trailWidth *0.12
+            );
+
+            ctx.lineTo(
+                backX + perpX * trailWidth *0.12,
+                backY + perpY * trailWidth *0.12
+            );
+
+            ctx.closePath();
+            ctx.fill();
+        }
+
+        ctx.restore();
+    }
+
     ctx.beginPath();
     ctx.arc(
         ball.x,
@@ -587,7 +667,12 @@ const homeScreen = document.getElementById("home-screen");
 const playBtn = document.getElementById("playBtn");
 
 playBtn.addEventListener("click", function (){
-    homeScreen.style.display = "none"
+    homeScreen.style.display = "none";
+
+    nextEventTime = Date.now() + randomEventDelay();
+
+    gameRunning = true;
+    gameLoop();
 });
 
 const settingsBtn = document.getElementById("settingsBtn");
@@ -595,16 +680,10 @@ const settingsPanel = document.getElementById("settings-panel");
 const closeSettings = document.getElementById("closeSettings");
 
 settingsBtn.addEventListener("click", function () {
-    settingsPanel.classList.add("open");
-
-    console.log("Panel classes:", settingsPanel.className);
-    console.log("Panel Position:", getComputedStyle(settingsPanel).transform);
-    console.log("Panel opacity:", getComputedStyle(settingsPanel).opacity);
+    settingsPanel.classList.toggle("open");
+    howToPlayPanel.classList.remove("open");
 });
 
-closeSettings.addEventListener("click", function () {
-    settingsPanel.classList.remove("open");
-});
 
 document.getElementById("settings-panel").classList.add("open");
 
@@ -614,4 +693,21 @@ let soundEnabled = true;
 soundToggle.addEventListener("click", function () {
     soundEnabled =!soundEnabled;
     soundToggle.classList.toggle("off", !soundEnabled);
+});
+
+const musicToggle = document.getElementById("musicToggle");
+let musicEnabled = true;
+
+musicToggle.addEventListener("click", function () {
+    musicEnabled = !musicEnabled;
+    musicToggle.classList.toggle("off", !musicEnabled);
+});
+
+const howToPlayBtn = document.getElementById("howToPlayBtn");
+const howToPlayPanel = document.getElementById("howtoplay-panel");
+const closeHowToPlay = document.getElementById("closeHowToPlay");
+
+howToPlayBtn.addEventListener("click", function () {
+    howToPlayPanel.classList.toggle("open");
+    settingsPanel.classList.remove("open");
 });

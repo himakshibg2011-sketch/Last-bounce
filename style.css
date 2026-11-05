@@ -358,7 +358,7 @@ body {
 }
 
 .toggle-circle {
-    display: black;
+    display: block;
     flex-shrink:0;
     width:26px;
     height:26px;
@@ -373,4 +373,52 @@ body {
 
 .toggle-switch.off .toggle-circle {
     transform:translateX(-33px);
+}
+
+#howtoplay-panel {
+    position:fixed;
+    top:50%;
+    right:40px;
+    width:340px;
+    height:320px;
+    padding:30px;
+    box-sizing:border-box;
+    background:rgba(5,12, 30,0.92);
+    border:1px solid rgba(67, 232, 255, 0.7);
+    border-radius:18px;
+    box-shadow:0 0 25px rgba(0,217, 255, 0.17);
+    color:white;
+    font-family:Arial,sans-serif;
+    transform:translate(120%,-50%);
+    opacity:0;
+    transition: transform 0.45s ease, opacity 0.35s ease;
+    z-index:9999;
+}
+
+#howtoplay-panel.open {
+    transform: translate(0,-50%);
+    opacity:1;
+}
+
+#closeHowToPlay {
+    position:absolute;
+    top:15px;
+    right:15px;
+    background:transparent;
+    border:none;
+    color:white;
+    font-size:22px;
+    cursor:pointer;
+}
+
+#howtoplay-panel h2 {
+    color: #43e8ff;
+    letter-spacing:3px;
+    margin-top: 25px;
+}
+
+.instructions {
+    margin-top: 25px;
+    line-height: 1.8;
+    font-size:14px;
 }
