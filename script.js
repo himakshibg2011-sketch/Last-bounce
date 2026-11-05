@@ -596,8 +596,22 @@ const closeSettings = document.getElementById("closeSettings");
 
 settingsBtn.addEventListener("click", function () {
     settingsPanel.classList.add("open");
+
+    console.log("Panel classes:", settingsPanel.className);
+    console.log("Panel Position:", getComputedStyle(settingsPanel).transform);
+    console.log("Panel opacity:", getComputedStyle(settingsPanel).opacity);
 });
 
 closeSettings.addEventListener("click", function () {
     settingsPanel.classList.remove("open");
+});
+
+document.getElementById("settings-panel").classList.add("open");
+
+const soundToggle = document.getElementById("soundToggle");
+let soundEnabled = true;
+
+soundToggle.addEventListener("click", function () {
+    soundEnabled =!soundEnabled;
+    soundToggle.classList.toggle("off", !soundEnabled);
 });

@@ -294,42 +294,45 @@ body {
 }
 
 #settings-panel {
-    position:absolute;
-    top:0;
-    right:0;
-    width:320px;
-    height:100%;
-    padding: 40px 25px;
+    position:fixed;
+    top:50%;
+    right:40px;
+    width:300px;
+    height:300px;
+    padding:30px;
     box-sizing:border-box;
-    background:rgba(5, 12, 30, 0.95);
-    border-left: 2px solid #43eBff;
-    box-shadow: -5px 0 25px rgba (0,217, 255, 0.25);
-    color: white;
+    background: rgba(5, 12, 30, 0.92);
+    border:1px solid rgba(67, 232, 255, 0.7);
+    border-radius: 18px;
+    box-shadow:0 0 25px rgba(0,217, 255, 0.15);
+    color:white;
     font-family:Arial, sans-serif;
-    transform: translateX(100%);
-    transition: transform 0.4s ease;
-    z-index:40;
+    transform: translate(120%, -50%);
+    opacity:0;
+    transition: transform 0.45s ease, opacity 0.35s ease;
+    z-index:9999;
 }
 
 #settings-panel.open{
-    transform:translateX(0);
+    transform:translate(0, -50%);
+    opacity:1;
 }
 
 #closeSettings {
     position:absolute;
-    top:20px;
-    right:20px;
+    top:15px;
+    right:15px;
     background: transparent;
     border:none;
     color:white;
-    font-size: 25px;
+    font-size: 22px;
     cursor:pointer;
 }
 
 #settings-panel h2 {
-    color: #43e8ff;
-    letter-spacing: 4px;
-    margin-top:35px;
+  color: #43e8ff;
+  letter-spacing:4px;
+  margin-top:25px;
 }
 
 .setting-option {
@@ -338,4 +341,36 @@ body {
     align-items:center;
     margin-top:35px;
     color:white;
+}
+
+.toggle-switch {
+    width:65px;
+    height:32px;
+    border:none;
+    border-radius: 50px;
+    background: #123c48;
+    padding:3px;
+    display:flex;
+    align-items:center;
+    justify-content: flex-end;
+    cursor:pointer;
+    transition:background 0.3s ease;
+}
+
+.toggle-circle {
+    display: black;
+    flex-shrink:0;
+    width:26px;
+    height:26px;
+    background:white;
+    border-radius:50%;
+    transition:transform 0.3s ease;
+}
+
+.toggle-switch.off {
+    background: #343b49;
+}
+
+.toggle-switch.off .toggle-circle {
+    transform:translateX(-33px);
 }
