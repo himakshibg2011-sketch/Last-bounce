@@ -298,7 +298,7 @@ body {
     top:50%;
     right:40px;
     width:300px;
-    height:300px;
+    height:340px;
     padding:30px;
     box-sizing:border-box;
     background: rgba(5, 12, 30, 0.92);
@@ -313,9 +313,25 @@ body {
     z-index:9999;
 }
 
+#settings-option {
+    display:flex;
+    flex-direction:row;
+    justify-content:space-between;
+    align-items:center;
+    width:100%;
+    margin-top:20px;
+    color:white;
+    font-size:17px;
+}
+
 #settings-panel.open{
     transform:translate(0, -50%);
     opacity:1;
+}
+
+.settings-option .toggle-switch {
+    flex-shrink:0;
+    margin-left:0;
 }
 
 #closeSettings {
@@ -330,22 +346,29 @@ body {
 }
 
 #settings-panel h2 {
-  color: #43e8ff;
+  color: #00eaff;
   letter-spacing:4px;
-  margin-top:25px;
+  margin-top:15px;
+  text-align: center;
+  font-size:27px;
+  padding-bottom:15px;
+  border-bottom:1px solid rgba(0, 234,255,0.25);
+  margin-bottom:25px;
 }
 
-.setting-option {
+.settings-option {
     display:flex;
-    justify-content: space-between;
+    justify-content:flex-start;
+    gap:10px;
     align-items:center;
-    margin-top:35px;
+    margin-top:25px;
     color:white;
+    font-size: 18px;
 }
 
 .toggle-switch {
-    width:65px;
-    height:32px;
+    width:50px;
+    height:25px;
     border:none;
     border-radius: 50px;
     background: #123c48;
@@ -360,8 +383,8 @@ body {
 .toggle-circle {
     display: block;
     flex-shrink:0;
-    width:26px;
-    height:26px;
+    width:19px;
+    height:19px;
     background:white;
     border-radius:50%;
     transition:transform 0.3s ease;
@@ -372,7 +395,7 @@ body {
 }
 
 .toggle-switch.off .toggle-circle {
-    transform:translateX(-33px);
+    transform:translateX(-25px);
 }
 
 #howtoplay-panel {
@@ -412,13 +435,30 @@ body {
 }
 
 #howtoplay-panel h2 {
-    color: #43e8ff;
-    letter-spacing:3px;
-    margin-top: 25px;
+    color: #00eaff;
+    letter-spacing:4px;
+    margin-top: 15px;
+    text-align:center;
+    font-size:27px;
+    padding-bottom:15px;
+    border-bottom:1px solid rgba(0,234,255,0.25);
+    margin-bottom:25px;
 }
 
 .instructions {
     margin-top: 25px;
     line-height: 1.8;
     font-size:14px;
+}
+
+@keyframes screenShake {
+    0% {transform:translate(0,0);}
+    25% {transform:translate(-5px, 3px);}
+    50% {transform:translate(5px, -3px);}
+    75% {transform:translate(-3px, -2px);}
+    100% {transform:translate(0,0);}
+}
+
+.shake {
+    animation :screenShake 0.2s ease;
 }

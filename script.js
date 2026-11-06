@@ -25,7 +25,7 @@ const eventIcon = document.getElementById("event-icon");
 
 let score = 0;
 let lives = 3;
-let gameRunning = false;
+let gameRunning = false;   
 let startTime = Date.now();
 let lastSpeedIncrease = Date.now();
 
@@ -176,7 +176,7 @@ function updateBall(ball) {
             dy:ball.dy
         });
 
-        if (ball.trail.length >8) {
+        if (ball.trail.length >7) {
             ball.trail.shift();
         }
     } else if (ball.trail) {
@@ -703,6 +703,14 @@ musicToggle.addEventListener("click", function () {
     musicToggle.classList.toggle("off", !musicEnabled);
 });
 
+const trailToggle = document.getElementById("trailToggle");
+let trailEnabled = true;
+
+trailToggle.addEventListener("click", function () {
+    trailEnabled = !trailEnabled;
+    trailToggle.classList.toggle("off", !trailEnabled);
+});
+
 const howToPlayBtn = document.getElementById("howToPlayBtn");
 const howToPlayPanel = document.getElementById("howtoplay-panel");
 const closeHowToPlay = document.getElementById("closeHowToPlay");
@@ -710,4 +718,12 @@ const closeHowToPlay = document.getElementById("closeHowToPlay");
 howToPlayBtn.addEventListener("click", function () {
     howToPlayPanel.classList.toggle("open");
     settingsPanel.classList.remove("open");
+});
+
+const shakeToggle = document.getElementById("shakeToggle");
+let shakeEnabled = true;
+
+shakeToggle.addEventListener("click", function () {
+    shakeEnabled = !shakeEnabled;
+    shakeToggle.classList.toggle("off", !shakeEnabled);
 });
