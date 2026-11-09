@@ -450,15 +450,3 @@ body {
     line-height: 1.8;
     font-size:14px;
 }
-
-@keyframes screenShake {
-    0% {transform:translate(0,0);}
-    25% {transform:translate(-5px, 3px);}
-    50% {transform:translate(5px, -3px);}
-    75% {transform:translate(-3px, -2px);}
-    100% {transform:translate(0,0);}
-}
-
-.shake {
-    animation :screenShake 0.2s ease;
-}

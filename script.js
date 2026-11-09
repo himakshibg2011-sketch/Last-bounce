@@ -28,6 +28,8 @@ let lives = 3;
 let gameRunning = false;   
 let startTime = Date.now();
 let lastSpeedIncrease = Date.now();
+let shakeAmount = 0;
+let shakeFrames = 0;
 
 // PLAYER / PADDLE
 
@@ -230,6 +232,8 @@ function updateBall(ball) {
      );
 
      score += 10;
+
+     triggerScreenShake();
 
      scoreText.textContent = score;
  }
@@ -494,13 +498,16 @@ function hideEvent() {
 //Draw Everything
 
 function draw() {
-    ctx.clearRect(
-        0,
-        0,
-        canvas.width,
-        canvas.height
-    );
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.save();
 
+    if (shakeEnabled && shakeFrames > 0) {
+        let offsetX = (Math.random() -0.5) * shakeAmount;
+        let offsetY = (Math.random() -0.5) * shakeAmount;
+
+        ctx.translate(offsetX, offsetY);
+        shakeFrames--;
+    }
 
     drawBall(mainBall);
     for (let ball of extraBalls) {
@@ -515,18 +522,18 @@ function draw() {
         let elapsed = 
         eventDuration - (eventEndTime - Date.now());
         let fadeTime = 700;
-        let opactiy;
+        let opacity;
 
         if(elapsed < fadeTime) {
-            opactiy = elapsed /fadeTime;
+            opacity = elapsed /fadeTime;
         } else if (elapsed > eventDuration - fadeTime) {
             opacity = 
             (eventDuration - elapsed) / fadeTime;
         } else {
-            opactiy = 1;
+            opacity = 1;
         }
 
-        ctx.fillStyle = 'rgba(0, 0, 0, ${opacity})';
+        ctx.fillStyle = `rgba(0, 0, 0, ${opacity})`;
         ctx.fillRect(
             0,
             0,
@@ -534,6 +541,14 @@ function draw() {
             canvas.height
         );
     }
+
+    ctx.restore();
+}
+
+function triggerScreenShake() {
+    if (!shakeEnabled || !gameRunning) return;
+    shakeAmount = 12;
+    shakeFrames = 8;
 }
 
 //Draw Ball
@@ -727,3 +742,5 @@ shakeToggle.addEventListener("click", function () {
     shakeEnabled = !shakeEnabled;
     shakeToggle.classList.toggle("off", !shakeEnabled);
 });
+
+const gameContainer = document.querySelector(".gamecontainer");
