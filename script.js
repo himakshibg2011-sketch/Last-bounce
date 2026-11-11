@@ -30,6 +30,7 @@ let startTime = Date.now();
 let lastSpeedIncrease = Date.now();
 let shakeAmount = 0;
 let shakeFrames = 0;
+let gamePaused = false;
 
 // PLAYER / PADDLE
 
@@ -265,6 +266,8 @@ function updateExtraBalls() {
 function loseLife() {
     lives--;
     updateLives();
+
+    triggerScreenShake("strong");
 
     if (lives <=0) {
         endGame();
@@ -545,10 +548,16 @@ function draw() {
     ctx.restore();
 }
 
-function triggerScreenShake() {
+function triggerScreenShake(strength = "normal") {
     if (!shakeEnabled || !gameRunning) return;
+
+    if(strength === "strong"){
     shakeAmount = 12;
-    shakeFrames = 8;
+    shakeFrames = 16;
+    } else {
+        shakeAmount = 12;
+        shakeFrames =8;
+    }
 }
 
 //Draw Ball
@@ -744,3 +753,22 @@ shakeToggle.addEventListener("click", function () {
 });
 
 const gameContainer = document.querySelector(".gamecontainer");
+
+const pauseBtn = document.getElementById("pauseBtn");
+const pauseScreen = document.getElementById("pause-screen");
+const resumeBtn = document.getElementById("resumeBtn");
+
+pauseBtn.addEventListener("click", function () {
+    if (!gameRunning || gamePaused) return;
+    gamePaused = true;
+    gameRunning = false;
+    pauseScreen.style.display = "block";
+});
+
+resumeBtn.addEventListener("click", function () {
+    if (!gamePaused) return;
+    gamePaused = false;
+    pauseScreen.style.display = "none";
+    gameRunning =true;
+    gameLoop();
+});
