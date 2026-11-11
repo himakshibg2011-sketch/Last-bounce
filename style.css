@@ -11,15 +11,22 @@ body {
 
 .game-container {
     position: relative;
-
     width: 100vw;
     height: 100vh;
-    background-image: url("background.jfif");
-    background-size:cover;
-    background-position: center;
-    background-repeat:no-repeat;
-
+    isolation:isolate;
+    background:none;
     overflow: hidden;
+}
+
+.game-container::before {
+    content: "";
+    position:absolute;
+    inset:0;
+    background-image:url("background.jfif");
+    background-size:cover;
+    background-position:center;
+    background-repeat: no-repeat;
+    z-index:-1;
 }
 
 .top-bar {
@@ -480,6 +487,34 @@ body {
     box-shadow: 0 0 12px rgba(67, 232, 255, 0.5);
 }
 
+#pause-screen {
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    width:320px;
+    padding:30px;
+    background:rgba(5, 12, 30, 0.95);
+    border: 1px solid #43eBff;
+    border-radius:15px;
+    text-align:center;
+    color:white;
+    z-index:100;
+    display:none;
+}
+
+#pause-screen h1 {
+    color: #43eBff;
+    margin-bottom: 25px;
+}
+
+.pause-buttons {
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+    width:100%;
+}
+
 .pause-buttons button {
     padding: 12px;
     width:100%;
@@ -491,4 +526,17 @@ body {
     letter-spacing:2px;
     cursor:pointer;
     display:block;
+}
+
+#pause-overlay{
+    position:absolute;
+    top:65px;
+    left:0;
+    width:100%;
+    height:clac(100%-65px);
+    background:rgba(0,0,0,0.55);
+    backdrop-filter:blur(25px);
+    -webkit-backdrop-filter:blur(25px);
+    z-index:99;
+    display:none;
 }

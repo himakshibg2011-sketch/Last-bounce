@@ -17,6 +17,7 @@ const finalScore = document.getElementById("final-score");
 const finalTime = document.getElementById("final-time");
 
 const restartButton = document.getElementById("restart-button");
+const pauseOverlay = document.getElementById("pause-overlay");
 
 const eventCircle = document.getElementById("event-circle");
 const eventIcon = document.getElementById("event-icon");
@@ -666,6 +667,12 @@ restartButton.addEventListener("click", function() {
     location.reload();
 });
 
+const pauseRestartBtn = document.getElementById("restartBtn");
+
+pauseRestartBtn.addEventListener("click", function () {
+    location.reload();
+});
+
 function updateEventCircle() {
 
     if(!eventActive) {
@@ -763,12 +770,14 @@ pauseBtn.addEventListener("click", function () {
     gamePaused = true;
     gameRunning = false;
     pauseScreen.style.display = "block";
+    pauseOverlay.style.display = "block";
 });
 
 resumeBtn.addEventListener("click", function () {
     if (!gamePaused) return;
     gamePaused = false;
     pauseScreen.style.display = "none";
+    pauseOverlay.style.display = "none";
     gameRunning =true;
     gameLoop();
 });
